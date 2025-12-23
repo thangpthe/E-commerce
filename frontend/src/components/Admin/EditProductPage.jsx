@@ -69,6 +69,14 @@ const EditProductPage = () => {
     }
   };
 
+  const handleDeleteImage = (index) => {
+    const updatedImages = productData.images.filter((_, i) => i !== index);
+    setProductData((prevData) => ({
+      ...prevData,
+      images: updatedImages,
+    }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(updateProduct({id,productData}));
@@ -127,10 +135,29 @@ const EditProductPage = () => {
           <label htmlFor="" className='block font-semibold mb-2'>Upload Image</label>
           <input type="file" onChange={handleImageUpload}/>
           {uploading && <p>Uploading</p>}
-          <div className="flex gap-4 mt-4">
+          {/* <div className="flex gap-4 mt-4">
             {productData.images.map((image,index)=> (
               <div key={index}>
                 <img src={image.url} alt={image.altText || "Product"} className='w-20 h-20 object-cover rounded-md shadow-md '/>
+              </div>
+            ))}
+          </div> */}
+          <div className="flex gap-4 mt-4">
+            {productData.images.map((image, index) => (
+              <div key={index} className="relative group">
+                <img
+                  src={image.url}
+                  alt={image.altText || "Product"}
+                  className="w-20 h-20 object-cover rounded-md shadow-md"
+                />
+                
+                <button
+                  type="button" 
+                  onClick={() => handleDeleteImage(index)}
+                  className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  ✕
+                </button>
               </div>
             ))}
           </div>
